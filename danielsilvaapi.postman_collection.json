@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "5412949a-fb3d-40a2-b506-ed128a921d21",
+		"name": "danielsilvaapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49158261"
+	},
+	"item": [
+		{
+			"name": "midias",
+			"item": [
+				{
+					"name": "obterLista",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/midias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"midias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incluir",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"God of War (2018)\",\r\n  \"console\": \"Playstation 4\",\r\n  \"desenvolvedora\": \"Santa Monica Studio\",\r\n  \"genero\": \"Aventura de Ação\",\r\n  \"anoLancamento\": 2018,\r\n  \"tipoMidia\": \"Blu-ray\",\r\n  \"regiao\": \"NTSC-U/C\",\r\n  \"estadoConservacao\": \"Novo, Lacrado\",\r\n  \"completoNaCaixa\": true,\r\n  \"quantidadeEmEstoque\": 12,\r\n  \"precoCusto\": 90.00,\r\n  \"precoVenda\": 149.90,\r\n  \"observacoes\": \"GOTY Edition, lacrado de fábrica.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/midias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"midias"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -23,7 +23,7 @@ public class MidiaService implements CrudService<Midia, Integer> {
 		midia.setId(nextId.getAndIncrement());
 		mapa.put(midia.getId(), midia);
 		
-		return null;
+		return midia;
 	}
 
 	@Override
