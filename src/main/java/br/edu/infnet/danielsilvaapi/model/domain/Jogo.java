@@ -1,5 +1,20 @@
 package br.edu.infnet.danielsilvaapi.model.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+@JsonTypeInfo(
+ use = JsonTypeInfo.Id.NAME, 
+ include = JsonTypeInfo.As.PROPERTY, 
+ property = "tipoMidia"
+)
+@JsonSubTypes({
+ @Type(value = Disco.class, name = "disco"),
+ @Type(value = Cartucho.class, name = "cartucho")
+})
+
 public abstract class Jogo {
 
 	private Integer id;
@@ -31,7 +46,6 @@ public abstract class Jogo {
     	);
     }
 
-    
     public Integer getId() {
 		return id;
 	}

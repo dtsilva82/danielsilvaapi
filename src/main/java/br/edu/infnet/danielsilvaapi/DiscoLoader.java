@@ -25,7 +25,7 @@ public class DiscoLoader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		FileReader arquivo = new FileReader("midias_catalogo_loja.csv");
+		FileReader arquivo = new FileReader("discos_catalogo_loja.csv");
 		BufferedReader leitura = new BufferedReader(arquivo);
 		
 		String linha = leitura.readLine();

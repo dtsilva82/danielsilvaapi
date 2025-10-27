@@ -4,7 +4,7 @@ public class Cartucho extends Jogo {
 
     private CartuchoConservacao cartuchoConservacao;
     private Boolean possuiCaixaOriginal;
-    private String regiao;
+    private CartuchoRegiao cartuchoRegiao;
 	
     @Override
     public String getTipoMidia() {
@@ -17,9 +17,9 @@ public class Cartucho extends Jogo {
     			"%s | Tipo da mídia: %s | Região: %s | Estado de Conservação %s | Caixa? %s",
     			super.toString(),
     			getTipoMidia(),
-    			regiao,
+    			cartuchoRegiao,
     			this.cartuchoConservacao.getRotulo(),
-    			this.possuiCaixaOriginal.booleanValue() ? "Caixa Original" : "Não acompanha caixa"
+    			getStatusCaixa()
     	);
     }
     
@@ -29,18 +29,19 @@ public class Cartucho extends Jogo {
 	public void setCartuchoConservacao(CartuchoConservacao cartuchoConservacao) {
 		this.cartuchoConservacao = cartuchoConservacao;
 	}
-	public Boolean getPossuiCaixaOriginal() {
-		return possuiCaixaOriginal;
-	}
+	public String getStatusCaixa() {
+        if (this.possuiCaixaOriginal != null && this.possuiCaixaOriginal) {
+            return "Caixa Original";
+        }
+        return "Não acompanha caixa";
+    }
 	public void setPossuiCaixaOriginal(Boolean possuiCaixaOriginal) {
 		this.possuiCaixaOriginal = possuiCaixaOriginal;
 	}
-	public String getRegiao() {
-		return regiao;
+	public String getCartuchoRegiao() {
+		return cartuchoRegiao.getRotulo(); 
 	}
-	public void setRegiao(String regiao) {
-		this.regiao = regiao;
+	public void setCartuchoRegiao(CartuchoRegiao cartuchoRegiao) { 
+		this.cartuchoRegiao = cartuchoRegiao;
 	}
-    
-    
 }

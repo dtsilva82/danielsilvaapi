@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import br.edu.infnet.danielsilvaapi.model.domain.Cartucho; 
 import br.edu.infnet.danielsilvaapi.model.domain.CartuchoConservacao;
+import br.edu.infnet.danielsilvaapi.model.domain.CartuchoRegiao;
 import br.edu.infnet.danielsilvaapi.model.domain.service.JogoService;
 
 
@@ -40,7 +41,7 @@ public class CartuchoLoader implements ApplicationRunner {
 			cartucho.setGenero(campos[3]);
 			cartucho.setAnoLancamento(campos[4]);
 			cartucho.setCartuchoConservacao(CartuchoConservacao.valueOf(campos[5]));
-			cartucho.setRegiao(campos[6]);
+			cartucho.setCartuchoRegiao(CartuchoRegiao.valueOf(campos[6]));
 			cartucho.setPossuiCaixaOriginal(Boolean.valueOf(campos[7]));
 			cartucho.setQuantidadeEmEstoque(Integer.valueOf(campos[8]));
 			cartucho.setPrecoCusto(Double.valueOf(campos[9]));

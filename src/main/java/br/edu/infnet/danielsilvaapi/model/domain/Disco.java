@@ -23,7 +23,6 @@ public class Disco extends Jogo{
     	);
     }
 
-
     public String getDiscoEstado() {
         return this.discoEstado.getRotulo(); 
     }
