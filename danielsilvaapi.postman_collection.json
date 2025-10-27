@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/midias",
+							"raw": "http://localhost:8080/api/jogos",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -23,20 +23,20 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"midias"
+								"jogos"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "incluir",
+					"name": "IncluirCartucho",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"titulo\": \"God of War (2018)\",\r\n  \"console\": \"Playstation 4\",\r\n  \"desenvolvedora\": \"Santa Monica Studio\",\r\n  \"genero\": \"Aventura de Ação\",\r\n  \"anoLancamento\": 2018,\r\n  \"tipoMidia\": \"Blu-ray\",\r\n  \"regiao\": \"NTSC-U/C\",\r\n  \"estadoConservacao\": \"Novo, Lacrado\",\r\n  \"completoNaCaixa\": true,\r\n  \"quantidadeEmEstoque\": 12,\r\n  \"precoCusto\": 90.00,\r\n  \"precoVenda\": 149.90,\r\n  \"observacoes\": \"GOTY Edition, lacrado de fábrica.\"\r\n}",
+							"raw": "{\r\n  \"titulo\": \"Super Mario 64\",\r\n  \"console\": \"N64\",\r\n  \"desenvolvedora\": \"Nintendo\",\r\n  \"genero\": \"Plataforma/Aventura\",\r\n  \"anoLancamento\": \"1996\",\r\n  \r\n  \"quantidadeEmEstoque\": 5,\r\n  \"precoCusto\": 45.00,\r\n  \"precoVenda\": 120.00,\r\n  \"observacoes\": \"Versão japonesa (NTSC-J), com estojo de acrílico.\",\r\n  \r\n  \"cartuchoConservacao\": \"BOM\",\r\n  \"regiao\": \"NTSC-J\",\r\n  \"possuiCaixaOriginal\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/midias",
+							"raw": "http://localhost:8080/api/jogos/cartucho",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -52,13 +52,44 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"midias"
+								"jogos",
+								"cartucho"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "incluirDisco",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"Horizon Zero Dawn\",\r\n  \"console\": \"PS4\",\r\n  \"desenvolvedora\": \"Guerrilla Games\",\r\n  \"genero\": \"RPG de Ação\",\r\n  \"anoLancamento\": \"2017\",\r\n  \r\n  \"quantidadeEmEstoque\": 12,\r\n  \"precoCusto\": 25.00,\r\n  \"precoVenda\": 79.90,\r\n  \"observacoes\": \"Edição Completa (Complete Edition), semi-novo.\",\r\n  \r\n  \"discoEstado\": \"OTIMO\",\r\n  \"discoCapa\": \"ORIGINAL\",\r\n  \"discoConteudoExtra\": \"NAO_POSSUI\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jogos/disco",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos",
+						"disco"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

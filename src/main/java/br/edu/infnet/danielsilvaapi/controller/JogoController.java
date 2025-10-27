@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
+import br.edu.infnet.danielsilvaapi.model.domain.Cartucho;
 import br.edu.infnet.danielsilvaapi.model.domain.Disco;
 import br.edu.infnet.danielsilvaapi.model.domain.service.JogoService;
 
 @RestController
-@RequestMapping("/api/midias")
+@RequestMapping("/api/jogos")
 public class JogoController {
 	
 	private final JogoService jogoService;
@@ -23,12 +23,21 @@ public class JogoController {
 	}
 	
 	
-	@PostMapping
-	public Jogo incluir(@RequestBody Jogo jogo) {
+	// Rota específica para inclusão de DISCOS (Mídias)
+	@PostMapping("/disco")
+	public Disco incluirDisco(@RequestBody Disco disco) {
+
+		Jogo jogoIncluido = jogoService.incluir(disco);
+			
+		return (Disco) jogoIncluido;
+	}
+	
+	@PostMapping("/cartucho")
+	public Cartucho incluirCartucho(@RequestBody Cartucho cartucho) {
 		
-		Jogo jogoIncluido = jogoService.incluir(jogo);
-		
-		return jogoIncluido;
+		Jogo jogoIncluido = jogoService.incluir(cartucho);
+
+		return (Cartucho) jogoIncluido;
 	}
 	
 	@GetMapping
