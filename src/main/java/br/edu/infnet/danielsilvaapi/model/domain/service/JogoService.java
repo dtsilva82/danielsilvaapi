@@ -9,39 +9,37 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.danielsilvaapi.interfaces.CrudService;
-import br.edu.infnet.danielsilvaapi.model.domain.Midia;
+import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
 
 @Service
-public class MidiaService implements CrudService<Midia, Integer> {
+public class JogoService implements CrudService<Jogo, Integer> {
 	
-	private final Map<Integer, Midia> mapa = new ConcurrentHashMap<Integer, Midia>();
+	private final Map<Integer, Jogo> mapa = new ConcurrentHashMap<Integer, Jogo>(); // Mapa armazena Jogo
 	private final AtomicInteger nextId = new AtomicInteger(1);
-
+	
 	@Override
-	public Midia incluir(Midia midia) {
+	public Jogo incluir(Jogo jogo) {
+		jogo.setId(nextId.getAndIncrement());
+		mapa.put(jogo.getId(), jogo);
 		
-		midia.setId(nextId.getAndIncrement());
-		mapa.put(midia.getId(), midia);
-		
-		return midia;
+		return jogo;
 	}
 
 	@Override
-	public List<Midia> obterLista() {
+	public List<Jogo> obterLista() {
 		
-		return new ArrayList<Midia>(mapa.values());
+		return new ArrayList<Jogo>(mapa.values());
 	}
 
 	@Override
-	public Midia alterar(Integer id, Midia etidade) {
+	public Jogo alterar(Integer id, Jogo etidade) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+
 	@Override
 	public void excluir(Integer id) {
 		mapa.remove(id);
-		
 	}
-
 }
