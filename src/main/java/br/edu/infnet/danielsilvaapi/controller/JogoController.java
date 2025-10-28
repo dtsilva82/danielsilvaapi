@@ -23,6 +23,7 @@ import br.edu.infnet.danielsilvaapi.model.domain.Cartucho;
 import br.edu.infnet.danielsilvaapi.model.domain.Disco;
 import br.edu.infnet.danielsilvaapi.model.service.CartuchoService;
 import br.edu.infnet.danielsilvaapi.model.service.DiscoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/jogos")
@@ -37,7 +38,7 @@ public class JogoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Jogo> incluir(@RequestBody Jogo jogo) {
+	public ResponseEntity<Jogo> incluir(@Valid @RequestBody Jogo jogo) {
 
 		if (jogo instanceof Disco) {
 			
@@ -108,15 +109,15 @@ public class JogoController {
 
         if (jogo instanceof Disco) {
         	
-        		Disco discoIncluido = discoService.incluir((Disco) jogo);
+        		Disco discoAlterado = discoService.alterar(id, (Disco) jogo);
         		
-        		return ResponseEntity.ok(discoIncluido);
+        		return ResponseEntity.ok(discoAlterado);
         		
         } else if (jogo instanceof Cartucho) {
        		
-        		Cartucho cartuchoIncluido = cartuchoService.incluir((Cartucho) jogo);
+        	Cartucho cartuchoAlterado = cartuchoService.alterar(id, (Cartucho) jogo);
     		
-       		return ResponseEntity.ok(cartuchoIncluido);
+       		return ResponseEntity.ok(cartuchoAlterado);
         }
 
         throw new IllegalArgumentException("Tipo de jogo inválido ou não reconhecido no payload para alteração.");

@@ -1,10 +1,15 @@
 package br.edu.infnet.danielsilvaapi.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name = "jogo_seq", sequenceName = "JOGO_SEQ", allocationSize = 1)
 public class Disco extends Jogo{
 	
 	@Enumerated(EnumType.STRING)
@@ -25,33 +30,49 @@ public class Disco extends Jogo{
     			"%s | Tipo da mídia: %s | Estado de Conservação: %s | Capa: %s | Conteúdo Extra? %s",
     			super.toString(),
     			getTipoMidia(),
-    			this.discoEstado.getRotulo(),
-    			this.discoCapa.getRotulo(),
-    			this.discoConteudoExtra.getRotulo()
+    			getDiscoEstadoRotulo(),
+    			getDiscoCapaRotulo(),
+    			getDiscoConteudoExtraRotulo()
     	);
     }
 
-    public String getDiscoEstado() {
-        return this.discoEstado.getRotulo(); 
+    @JsonIgnore
+    public DiscoEstado getDiscoEstadoEnum() {
+        return this.discoEstado; 
     }
-
 	public void setDiscoEstado(DiscoEstado discoEstado) {
 		this.discoEstado = discoEstado;
 	}
 
-	public String getDiscoCapa() {
-	    return this.discoCapa.getRotulo();
+    @JsonIgnore
+	public DiscoCapa getDiscoCapaEnum() {
+	    return this.discoCapa;
 	}
-	
 	public void setDiscoCapa(DiscoCapa discoCapa) {
 	    this.discoCapa = discoCapa;
 	}
 
-	public String getDiscoConteudoExtra() {
-		return this.discoConteudoExtra.getRotulo();
+    @JsonIgnore
+	public DiscoConteudoExtra getDiscoConteudoExtraEnum() {
+		return this.discoConteudoExtra;
 	}
-
 	public void setDiscoConteudoExtra(DiscoConteudoExtra discoConteudoExtra) {
 		this.discoConteudoExtra = discoConteudoExtra;
 	}
+	
+    @JsonProperty("discoEstado")
+    public String getDiscoEstadoRotulo() {
+        return this.discoEstado != null ? this.discoEstado.getRotulo() : "N/A"; 
+    }
+
+    @JsonProperty("discoCapa")
+	public String getDiscoCapaRotulo() {
+	    return this.discoCapa != null ? this.discoCapa.getRotulo() : "N/A";
+	}
+
+    @JsonProperty("discoConteudoExtra")
+	public String getDiscoConteudoExtraRotulo() {
+		return this.discoConteudoExtra != null ? this.discoConteudoExtra.getRotulo() : "N/A";
+	}
+    
 }

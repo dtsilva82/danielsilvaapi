@@ -1,23 +1,32 @@
 package br.edu.infnet.danielsilvaapi.model.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.edu.infnet.danielsilvaapi.client.RawgApiClient;
+import br.edu.infnet.danielsilvaapi.dto.GameScores;
 import br.edu.infnet.danielsilvaapi.exceptions.JogoNaoEncontradoException;
 import br.edu.infnet.danielsilvaapi.interfaces.CrudService;
 import br.edu.infnet.danielsilvaapi.model.domain.Disco;
 import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
 import br.edu.infnet.danielsilvaapi.model.repository.DiscoRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Service
 public class DiscoService implements CrudService<Disco, Integer> { 
 	
 	private final DiscoRepository discoRepository;
+	private final RawgApiClient rawgApiClient;
+	private final EntityManager entityManager;
 	
-	public DiscoService(DiscoRepository discoRepository) {
+	public DiscoService(DiscoRepository discoRepository, RawgApiClient rawgApiClient, EntityManager entityManager) {
 		this.discoRepository = discoRepository;
+		this.rawgApiClient = rawgApiClient;
+		this.entityManager = entityManager;
 	}
 	
 		
@@ -26,6 +35,17 @@ public class DiscoService implements CrudService<Disco, Integer> {
 		
 		validarCamposObrigatorios(disco);
 		tratarObservacoes(disco);
+		
+		String termoBusca = disco.getTitulo() + " " + disco.getConsole();
+		GameScores scores = rawgApiClient.buscarScores(termoBusca).block();
+		
+		disco.setLastApiSync(LocalDateTime.now());
+		
+		if (scores != null) {
+            disco.setMetacriticScore(scores.getMetacriticScore());
+            disco.setUserScore(scores.getUserScore());
+            disco.setUserRatingText(scores.getUserRatingText());
+        }
 
 		return discoRepository.save(disco); 
 	}
@@ -49,15 +69,31 @@ public class DiscoService implements CrudService<Disco, Integer> {
 		);
 	}
 
+	@Transactional
 	@Override
 	public Disco alterar(Integer id, Disco disco) {
 		
+		Disco discoExistente = obterPorID(id);
+				
 		validarCamposObrigatorios(disco);
 		tratarObservacoes(disco);
 		
-		disco.setId(id);
-		
-		return discoRepository.save(disco);
+		discoExistente.setTitulo(disco.getTitulo());
+        discoExistente.setConsole(disco.getConsole());
+        discoExistente.setDesenvolvedora(disco.getDesenvolvedora());
+        discoExistente.setGenero(disco.getGenero());
+        discoExistente.setAnoLancamento(disco.getAnoLancamento());
+        discoExistente.setQuantidadeEmEstoque(disco.getQuantidadeEmEstoque());
+        discoExistente.setPrecoCusto(disco.getPrecoCusto());
+        discoExistente.setPrecoVenda(disco.getPrecoVenda());
+        discoExistente.setObservacoes(disco.getObservacoes());
+        
+        discoExistente.setDiscoEstado(disco.getDiscoEstadoEnum());
+        discoExistente.setDiscoCapa(disco.getDiscoCapaEnum());
+        discoExistente.setDiscoConteudoExtra(disco.getDiscoConteudoExtraEnum());
+        
+        return entityManager.merge(discoExistente);
+	
 	}
 
 

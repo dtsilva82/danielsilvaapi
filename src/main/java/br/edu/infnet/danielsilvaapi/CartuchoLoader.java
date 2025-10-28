@@ -9,7 +9,6 @@ import br.edu.infnet.danielsilvaapi.model.domain.Cartucho;
 import br.edu.infnet.danielsilvaapi.model.domain.CartuchoConservacao;
 import br.edu.infnet.danielsilvaapi.model.domain.CartuchoRegiao;
 import br.edu.infnet.danielsilvaapi.model.service.CartuchoService;
-import br.edu.infnet.danielsilvaapi.model.service.DiscoService;
 
 
 @Component
