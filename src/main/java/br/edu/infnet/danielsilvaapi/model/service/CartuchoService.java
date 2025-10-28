@@ -1,75 +1,77 @@
-package br.edu.infnet.danielsilvaapi.model.domain.service;
+package br.edu.infnet.danielsilvaapi.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import br.edu.infnet.danielsilvaapi.exceptions.JogoNaoEncontradoException;
 import br.edu.infnet.danielsilvaapi.interfaces.CrudService;
+import br.edu.infnet.danielsilvaapi.model.domain.Cartucho;
 import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
+import br.edu.infnet.danielsilvaapi.model.repository.CartuchoRepository;
 
 @Service
-public class JogoService implements CrudService<Jogo, Integer> {
+public class CartuchoService implements CrudService<Cartucho, Integer> { 
 	
-	private final Map<Integer, Jogo> mapa = new ConcurrentHashMap<Integer, Jogo>(); // Mapa armazena Jogo
-	private final AtomicInteger nextId = new AtomicInteger(1);
+	private final CartuchoRepository cartuchoRepository;
 	
+	public CartuchoService(CartuchoRepository cartuchoRepository) {
+		this.cartuchoRepository = cartuchoRepository;
+	}
+	
+		
 	@Override
-	public Jogo incluir(Jogo jogo) {
+	public Cartucho incluir(Cartucho cartucho) {
 		
-		validarCamposObrigatorios(jogo);
-		
-		tratarObservacoes(jogo);
-		
-		jogo.setId(nextId.getAndIncrement());
-		mapa.put(jogo.getId(), jogo);
-		
-		return jogo;
+		validarCamposObrigatorios(cartucho);
+		tratarObservacoes(cartucho);
+
+		return cartuchoRepository.save(cartucho); 
 	}
 
 	@Override
-	public List<Jogo> obterLista() {
-		
-		return new ArrayList<Jogo>(mapa.values());
+	public List<Cartucho> obterLista() {
+		return cartuchoRepository.findAll();
 	}
 	
 	@Override
-	public Jogo obterPorID(Integer id) {
+	public Cartucho obterPorID(Integer id) {
 		
 		if(id == null || id <= 0) {
-			throw new IllegalArgumentException("O ID utilizado a busca de Jogo não pode ser nulo");
+			throw new IllegalArgumentException("O ID utilizado a busca de Cartucho não pode ser nulo");
 		}
 		
-		Jogo jogo = mapa.get(id);
+		Optional<Cartucho> cartucho = cartuchoRepository.findById(id);
 		
-		if(jogo == null) {
-			throw new JogoNaoEncontradoException("O jogo com o ID ["+id+"] não foi encontrado");
-		}
-		
-		return jogo;
+		return cartucho.orElseThrow(() -> 
+		    new JogoNaoEncontradoException("O cartucho com o ID ["+id+"] não foi encontrado")
+		);
 	}
 
 	@Override
-	public Jogo alterar(Integer id, Jogo jogo) {
+	public Cartucho alterar(Integer id, Cartucho cartucho) {
 		
-		validarCamposObrigatorios(jogo);
-		tratarObservacoes(jogo);
-		jogo.setId(id);
-		mapa.put(id, jogo);
+		validarCamposObrigatorios(cartucho);
+		tratarObservacoes(cartucho);
 		
-		return null;
+		cartucho.setId(id);
+		
+		return cartuchoRepository.save(cartucho);
 	}
 
 
 	@Override
 	public void excluir(Integer id) {
-		Jogo jogo = obterPorID(id);
-		mapa.remove(jogo.getId());
+        
+        if(id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo ou zero");
+		}
+        
+        obterPorID(id); 
+		cartuchoRepository.deleteById(id);
 	}
+	
 	
 	private void validarCamposObrigatorios(Jogo jogo) {
          if (jogo.getTitulo() == null || jogo.getTitulo().trim().isEmpty()) {

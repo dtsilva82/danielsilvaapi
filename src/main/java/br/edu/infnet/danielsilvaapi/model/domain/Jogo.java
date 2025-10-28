@@ -3,6 +3,11 @@ package br.edu.infnet.danielsilvaapi.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 @JsonTypeInfo(
@@ -15,8 +20,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
  @Type(value = Cartucho.class, name = "cartucho")
 })
 
+@MappedSuperclass
 public abstract class Jogo {
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jogo_seq")
 	private Integer id;
 	
 	private String console;
@@ -24,9 +32,9 @@ public abstract class Jogo {
     private String desenvolvedora;
     private String genero;
     private String anoLancamento;
-    private Integer quantidadeEmEstoque;
-    private Double precoCusto;
-    private Double precoVenda;
+    private int quantidadeEmEstoque;
+    private double precoCusto;
+    private double precoVenda;
     private String observacoes;
     public abstract String getTipoMidia();
     

@@ -1,9 +1,12 @@
 package br.edu.infnet.danielsilvaapi.model.domain;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Cartucho extends Jogo {
 
     private CartuchoConservacao cartuchoConservacao;
-    private Boolean possuiCaixaOriginal;
+    private boolean possuiCaixaOriginal;
     private CartuchoRegiao cartuchoRegiao;
 	
     @Override
@@ -13,14 +16,14 @@ public class Cartucho extends Jogo {
     
     @Override
     public String toString() {
-    	return String.format(
+    		return String.format(
     			"%s | Tipo da mídia: %s | Região: %s | Estado de Conservação %s | Caixa? %s",
     			super.toString(),
     			getTipoMidia(),
     			cartuchoRegiao,
     			this.cartuchoConservacao.getRotulo(),
-    			getStatusCaixa()
-    	);
+    			getPossuiCaixaOriginal()
+    		);
     }
     
     public String getCartuchoConservacao() {
@@ -29,15 +32,16 @@ public class Cartucho extends Jogo {
 	public void setCartuchoConservacao(CartuchoConservacao cartuchoConservacao) {
 		this.cartuchoConservacao = cartuchoConservacao;
 	}
-	public String getStatusCaixa() {
-        if (this.possuiCaixaOriginal != null && this.possuiCaixaOriginal) {
-            return "Caixa Original";
-        }
-        return "Não acompanha caixa";
-    }
-	public void setPossuiCaixaOriginal(Boolean possuiCaixaOriginal) {
+	public boolean isPossuiCaixaOriginal() {
+		return possuiCaixaOriginal;
+	}
+	public String getPossuiCaixaOriginal() {
+	    return this.possuiCaixaOriginal ? "Caixa Original" : "Não acompanha caixa";
+	}
+	public void setPossuiCaixaOriginal(boolean possuiCaixaOriginal) {
 		this.possuiCaixaOriginal = possuiCaixaOriginal;
 	}
+
 	public String getCartuchoRegiao() {
 		return cartuchoRegiao.getRotulo(); 
 	}

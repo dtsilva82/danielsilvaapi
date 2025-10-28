@@ -1,10 +1,18 @@
 package br.edu.infnet.danielsilvaapi.model.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+@Entity
 public class Disco extends Jogo{
 	
-	private DiscoEstado discoEstado;              
-    private DiscoCapa discoCapa;              
-    private DiscoConteudoExtra discoConteudoExtra;    
+	@Enumerated(EnumType.STRING)
+	private DiscoEstado discoEstado;
+	@Enumerated(EnumType.STRING)
+    private DiscoCapa discoCapa;
+	@Enumerated(EnumType.STRING)
+    private DiscoConteudoExtra discoConteudoExtra;
 
     @Override
     public String getTipoMidia() {

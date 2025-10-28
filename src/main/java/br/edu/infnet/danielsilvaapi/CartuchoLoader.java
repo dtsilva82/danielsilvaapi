@@ -8,16 +8,17 @@ import org.springframework.stereotype.Component;
 import br.edu.infnet.danielsilvaapi.model.domain.Cartucho; 
 import br.edu.infnet.danielsilvaapi.model.domain.CartuchoConservacao;
 import br.edu.infnet.danielsilvaapi.model.domain.CartuchoRegiao;
-import br.edu.infnet.danielsilvaapi.model.domain.service.JogoService;
+import br.edu.infnet.danielsilvaapi.model.service.CartuchoService;
+import br.edu.infnet.danielsilvaapi.model.service.DiscoService;
 
 
 @Component
 public class CartuchoLoader implements ApplicationRunner {
 	
-	private final JogoService jogoService;
+	private final CartuchoService cartuchoService;
 
-	public CartuchoLoader(JogoService jogoService) {
-		this.jogoService = jogoService;
+	public CartuchoLoader(CartuchoService cartuchoService) {
+		this.cartuchoService = cartuchoService;
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class CartuchoLoader implements ApplicationRunner {
 			cartucho.setPrecoVenda(Double.valueOf(campos[10]));
 			cartucho.setObservacoes(campos[11]);
 			 
-			jogoService.incluir(cartucho); 
+			cartuchoService.incluir(cartucho); 
 			
 			linha = leitura.readLine();
 		}

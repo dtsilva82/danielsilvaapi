@@ -1,0 +1,112 @@
+package br.edu.infnet.danielsilvaapi.model.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import br.edu.infnet.danielsilvaapi.exceptions.JogoNaoEncontradoException;
+import br.edu.infnet.danielsilvaapi.interfaces.CrudService;
+import br.edu.infnet.danielsilvaapi.model.domain.Disco;
+import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
+import br.edu.infnet.danielsilvaapi.model.repository.DiscoRepository;
+
+@Service
+public class DiscoService implements CrudService<Disco, Integer> { 
+	
+	private final DiscoRepository discoRepository;
+	
+	public DiscoService(DiscoRepository discoRepository) {
+		this.discoRepository = discoRepository;
+	}
+	
+		
+	@Override
+	public Disco incluir(Disco disco) {
+		
+		validarCamposObrigatorios(disco);
+		tratarObservacoes(disco);
+
+		return discoRepository.save(disco); 
+	}
+
+	@Override
+	public List<Disco> obterLista() {
+		return discoRepository.findAll();
+	}
+	
+	@Override
+	public Disco obterPorID(Integer id) {
+		
+		if(id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID utilizado a busca de Disco não pode ser nulo");
+		}
+		
+		Optional<Disco> disco = discoRepository.findById(id);
+		
+		return disco.orElseThrow(() -> 
+		    new JogoNaoEncontradoException("O disco com o ID ["+id+"] não foi encontrado")
+		);
+	}
+
+	@Override
+	public Disco alterar(Integer id, Disco disco) {
+		
+		validarCamposObrigatorios(disco);
+		tratarObservacoes(disco);
+		
+		disco.setId(id);
+		
+		return discoRepository.save(disco);
+	}
+
+
+	@Override
+	public void excluir(Integer id) {
+        
+        if(id == null || id <= 0) {
+			throw new IllegalArgumentException("O ID para exclusão não pode ser nulo ou zero");
+		}
+        
+        obterPorID(id); 
+		discoRepository.deleteById(id);
+	}
+	
+	
+	private void validarCamposObrigatorios(Jogo jogo) {
+         if (jogo.getTitulo() == null || jogo.getTitulo().trim().isEmpty()) {
+            throw new IllegalArgumentException("O título do jogo é obrigatório.");
+        }
+        if (jogo.getConsole() == null || jogo.getConsole().trim().isEmpty()) {
+            throw new IllegalArgumentException("O console é obrigatório.");
+        }
+        if (jogo.getDesenvolvedora() == null || jogo.getDesenvolvedora().trim().isEmpty()) {
+            throw new IllegalArgumentException("A desenvolvedora é obrigatória.");
+        }
+        if (jogo.getGenero() == null || jogo.getGenero().trim().isEmpty()) {
+            throw new IllegalArgumentException("O gênero é obrigatório.");
+        }
+        if (jogo.getAnoLancamento() == null || jogo.getAnoLancamento().trim().isEmpty()) {
+            throw new IllegalArgumentException("O ano de lançamento é obrigatório.");
+        }
+        
+        if (jogo.getQuantidadeEmEstoque() == null || jogo.getQuantidadeEmEstoque() < 0) {
+            throw new IllegalArgumentException("A quantidade em estoque é obrigatória e deve ser maior ou igual a zero.");
+        }
+        if (jogo.getPrecoCusto() == null || jogo.getPrecoCusto() < 0) {
+             throw new IllegalArgumentException("O preço de custo é obrigatório e não pode ser negativo.");
+        }
+        if (jogo.getPrecoVenda() == null || jogo.getPrecoVenda() < 0) {
+             throw new IllegalArgumentException("O preço de venda é obrigatório e não pode ser negativo.");
+        }
+    }
+    
+    private void tratarObservacoes(Jogo jogo) {	
+        String obs = jogo.getObservacoes();
+        if (obs == null || obs.trim().isEmpty()) {
+            jogo.setObservacoes("");
+        }
+    }
+
+
+}

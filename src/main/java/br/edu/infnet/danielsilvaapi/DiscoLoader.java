@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 import br.edu.infnet.danielsilvaapi.model.domain.DiscoCapa;
 import br.edu.infnet.danielsilvaapi.model.domain.DiscoConteudoExtra;
 import br.edu.infnet.danielsilvaapi.model.domain.DiscoEstado;
-import br.edu.infnet.danielsilvaapi.model.domain.Jogo;
+import br.edu.infnet.danielsilvaapi.model.service.DiscoService;
 import br.edu.infnet.danielsilvaapi.model.domain.Disco;
-import br.edu.infnet.danielsilvaapi.model.domain.service.JogoService;
 
 @Component
 public class DiscoLoader implements ApplicationRunner {
 	
-	private final JogoService jogoService;
+	private final DiscoService discoService;
 	
-	public DiscoLoader(JogoService jogoService) {
-		this.jogoService = jogoService;
+	public DiscoLoader(DiscoService discoService) {
+		this.discoService = discoService;
+
 	}
 	
 	@Override
@@ -35,29 +35,25 @@ public class DiscoLoader implements ApplicationRunner {
 			
 			campos = linha.split(",");
 			
-			Disco midia = new Disco();
-			midia.setTitulo(campos[0]);
-			midia.setConsole(campos[1]);
-			midia.setDesenvolvedora(campos[2]);
-			midia.setGenero(campos[3]);
-			midia.setAnoLancamento(campos[4]);
-			midia.setDiscoEstado(DiscoEstado.valueOf(campos[5]));
-			midia.setDiscoCapa(DiscoCapa.valueOf(campos[6]));
-			midia.setDiscoConteudoExtra(DiscoConteudoExtra.valueOf(campos[7]));
-			midia.setQuantidadeEmEstoque(Integer.valueOf(campos[8]));
-			midia.setPrecoCusto(Double.valueOf(campos[9]));
-			midia.setPrecoVenda(Double.valueOf(campos[10]));
-			midia.setObservacoes(campos[11]);
+			Disco disco = new Disco();
+			disco.setTitulo(campos[0]);
+			disco.setConsole(campos[1]);
+			disco.setDesenvolvedora(campos[2]);
+			disco.setGenero(campos[3]);
+			disco.setAnoLancamento(campos[4]);
+			disco.setDiscoEstado(DiscoEstado.valueOf(campos[5]));
+			disco.setDiscoCapa(DiscoCapa.valueOf(campos[6]));
+			disco.setDiscoConteudoExtra(DiscoConteudoExtra.valueOf(campos[7]));
+			disco.setQuantidadeEmEstoque(Integer.valueOf(campos[8]));
+			disco.setPrecoCusto(Double.valueOf(campos[9]));
+			disco.setPrecoVenda(Double.valueOf(campos[10]));
+			disco.setObservacoes(campos[11]);
 
-				
-			jogoService.incluir(midia);
+			discoService.incluir(disco);
 			
 			linha = leitura.readLine();
 		}
 		
-		Collection<Jogo> midias = jogoService.obterLista();
-		
-		midias.forEach(System.out::println);
 		
 		leitura.close();
 
