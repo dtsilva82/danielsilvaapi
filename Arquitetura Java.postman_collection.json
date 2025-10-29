@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "7cec1603-c80b-4504-bf2a-95cf2050bedb",
+		"name": "Arquitetura Java",
+		"description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49158261"
+	},
+	"item": [
+		{
+			"name": "obterLista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jogos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos"
+					],
+					"query": [
+						{
+							"key": "tipo",
+							"value": "cartucho",
+							"disabled": true
+						},
+						{
+							"key": "tipo",
+							"value": "disco",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "incluir",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tipoMidia\": \"disco\",\r\n  \"titulo\": \"Metal Gear Solid 4: Guns of the Patriots\",\r\n  \"console\": \"PlayStation 3\",\r\n  \"desenvolvedora\": \"Konami\",\r\n  \"genero\": \"Stealth\",\r\n  \"anoLancamento\": \"2008\",\r\n  \"quantidadeEmEstoque\": 5,\r\n  \"precoCusto\": 85.50,\r\n  \"precoVenda\": 150.00,\r\n  \"observacoes\": \"Edição Greatest Hits, funciona perfeitamente.\",\r\n  \"discoEstado\": \"RISCO_BAIXO\",\r\n  \"discoCapa\": \"ORIGINAL\",\r\n  \"discoConteudoExtra\": \"NAO_POSSUI\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jogos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "alterar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tipoMidia\": \"cartucho\",\r\n    \"console\": \"N64\",\r\n    \"titulo\": \"GoldenEye 007 (Edição de Teste)\",\r\n    \"desenvolvedora\": \"Rare\",\r\n    \"genero\": \"FPS\",\r\n    \"anoLancamento\": \"1997\",\r\n    \"quantidadeEmEstoque\": 8,\r\n    \"precoCusto\": 100.0,\r\n    \"precoVenda\": 1000.90,\r\n    \"observacoes\": \"TESTE FINAL.\",\r\n    \"cartuchoConservacao\": \"OTIMO\",\r\n    \"possuiCaixaOriginal\": \"False\",\r\n    \"cartuchoRegiao\": \"NTSC_US\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jogos/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscarPorId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jogos/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "excluir",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jogos/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jogos",
+						"10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
