@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +22,7 @@ import br.edu.infnet.danielsilvaapi.model.domain.Cartucho;
 import br.edu.infnet.danielsilvaapi.model.domain.Disco;
 import br.edu.infnet.danielsilvaapi.model.service.CartuchoService;
 import br.edu.infnet.danielsilvaapi.model.service.DiscoService;
+import br.edu.infnet.danielsilvaapi.model.service.PedidoService; // NOVO IMPORT
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,10 +31,12 @@ public class JogoController {
 
 	private final DiscoService discoService;
     private final CartuchoService cartuchoService;
+    private final PedidoService pedidoService;
 
-	public JogoController(DiscoService discoService, CartuchoService cartuchoService) {
+	public JogoController(DiscoService discoService, CartuchoService cartuchoService, PedidoService pedidoService) {
 		this.discoService = discoService;
         this.cartuchoService = cartuchoService;
+        this.pedidoService = pedidoService; // INJEÇÃO
 	}
 
 	@PostMapping
@@ -47,9 +49,9 @@ public class JogoController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(discoIncluido);
 		} else if (jogo instanceof Cartucho) {
     			
-        		Cartucho cartuchoIncluido = cartuchoService.incluir((Cartucho) jogo);
+    	    Cartucho cartuchoIncluido = cartuchoService.incluir((Cartucho) jogo);
                 
-    			return ResponseEntity.status(HttpStatus.CREATED).body(cartuchoIncluido);
+    		return ResponseEntity.status(HttpStatus.CREATED).body(cartuchoIncluido);
         }
 
         throw new IllegalArgumentException("Tipo de jogo inválido ou não reconhecido no payload.");
@@ -91,6 +93,19 @@ public class JogoController {
         );
 	}
 
+    @GetMapping("/busca")
+    public ResponseEntity<List<Jogo>> buscarJogosPorTitulo(
+        @RequestParam("termo") String termoBusca
+    ) {
+        List<Jogo> jogosEncontrados = pedidoService.buscarPorTituloParcial(termoBusca);
+        
+        if (jogosEncontrados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(jogosEncontrados);
+    }
+    
 	@GetMapping("/{id}")
 	public ResponseEntity<Jogo> obterPorId(@PathVariable Integer id) {
 		

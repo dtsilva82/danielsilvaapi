@@ -143,6 +143,22 @@ public class DiscoService implements CrudService<Disco, Integer> {
             jogo.setObservacoes("");
         }
     }
+    
+    @Transactional 
+    public Disco atualizarEstoque(Integer id, Integer quantidadeVendida) {
+        
+        Disco discoExistente = obterPorID(id); 
+        
+        int novoEstoque = discoExistente.getQuantidadeEmEstoque() - quantidadeVendida.intValue();
+
+        if (novoEstoque < 0) {
+            throw new IllegalArgumentException("Erro de transação: Tentativa de vender mais do que o estoque disponível para Disco ID " + id);
+        }
+        
+        discoExistente.setQuantidadeEmEstoque(novoEstoque);
+        
+        return entityManager.merge(discoExistente); 
+    }
 
 
 }

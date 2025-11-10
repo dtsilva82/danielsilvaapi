@@ -142,6 +142,22 @@ public class CartuchoService implements CrudService<Cartucho, Integer> {
             jogo.setObservacoes("");
         }
     }
+    
+    @Transactional
+    public Cartucho atualizarEstoque(Integer id, Integer quantidadeVendida) {
+        
+        Cartucho cartuchoExistente = obterPorID(id); 
+        
+        int novoEstoque = cartuchoExistente.getQuantidadeEmEstoque() - quantidadeVendida.intValue();
+
+        if (novoEstoque < 0) {
+            throw new IllegalArgumentException("Erro de transação: Tentativa de vender mais do que o estoque disponível para Cartucho ID " + id);
+        }
+        
+        cartuchoExistente.setQuantidadeEmEstoque(novoEstoque);
+
+        return entityManager.merge(cartuchoExistente); 
+    }
 
 
 }
